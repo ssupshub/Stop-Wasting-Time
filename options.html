@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Wasting Time - Settings</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="options-container">
+        <!-- Header -->
+        <header class="options-header">
+            <div class="header-content">
+                <h1>Stop Wasting Time</h1>
+                <p>Configure your productivity settings</p>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="btn btn--outline">🌙 Dark Mode</button>
+                <button id="reset-settings" class="btn btn--danger">Reset All</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="options-main">
+            <div class="options-grid">
+                <!-- Timer Settings -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>⏱️ Timer Settings</h2>
+                        <p>Configure your focus and break durations</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label for="work-duration">Work Duration (minutes)</label>
+                            <input type="number" id="work-duration" min="1" max="60" value="25">
+                            <span class="form-help">Time to focus on work (1-60 minutes)</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="break-duration">Break Duration (minutes)</label>
+                            <input type="number" id="break-duration" min="1" max="30" value="5">
+                            <span class="form-help">Time for breaks (1-30 minutes)</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="long-break-duration">Long Break Duration (minutes)</label>
+                            <input type="number" id="long-break-duration" min="5" max="60" value="15">
+                            <span class="form-help">Longer break after 4 sessions</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="auto-start-breaks">
+                                <span class="checkbox-custom"></span>
+                                Auto-start breaks
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="auto-start-work">
+                                <span class="checkbox-custom"></span>
+                                Auto-start work sessions
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Website Blocking -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>🚫 Website Blocking</h2>
+                        <p>Manage blocked websites during focus sessions</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enable-blocking">
+                                <span class="checkbox-custom"></span>
+                                Enable website blocking
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="blocked-sites">Blocked Websites</label>
+                            <div class="sites-input-container">
+                                <input type="text" id="site-input" placeholder="Enter website (e.g., facebook.com)">
+                                <button id="add-site" class="btn btn--primary">Add</button>
+                            </div>
+                            <span class="form-help">Enter domain names without http:// or www.</span>
+                        </div>
+
+                        <div class="blocked-sites-list" id="blocked-sites-list">
+                            <!-- Dynamic content -->
+                        </div>
+
+                        <div class="form-group">
+                            <button id="restore-default-sites" class="btn btn--outline">
+                                Restore Default Sites
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notifications -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>🔔 Notifications</h2>
+                        <p>Configure when and how you get notified</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enable-notifications">
+                                <span class="checkbox-custom"></span>
+                                Enable notifications
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="session-start-notifications">
+                                <span class="checkbox-custom"></span>
+                                Session start notifications
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="session-end-notifications">
+                                <span class="checkbox-custom"></span>
+                                Session end notifications
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="blocking-notifications">
+                                <span class="checkbox-custom"></span>
+                                Website blocking notifications
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notification-sound">Notification Sound</label>
+                            <select id="notification-sound">
+                                <option value="default">Default</option>
+                                <option value="bell">Bell</option>
+                                <option value="chime">Chime</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Task Management -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>✅ Task Management</h2>
+                        <p>Configure task and productivity tracking</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enable-task-tracking">
+                                <span class="checkbox-custom"></span>
+                                Enable task tracking
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="reset-tasks-daily">
+                                <span class="checkbox-custom"></span>
+                                Reset tasks daily
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="max-tasks">Maximum daily tasks</label>
+                            <input type="number" id="max-tasks" min="1" max="20" value="10">
+                            <span class="form-help">Maximum number of tasks per day</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="task-completion-notifications">
+                                <span class="checkbox-custom"></span>
+                                Task completion notifications
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Statistics -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>📊 Statistics & Data</h2>
+                        <p>Manage your productivity data</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="stats-overview">
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-focus-time">0h 0m</div>
+                                <div class="stat-label">Total Focus Time</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-sessions">0</div>
+                                <div class="stat-label">Total Sessions</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-tasks">0</div>
+                                <div class="stat-label">Tasks Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-blocked">0</div>
+                                <div class="stat-label">Sites Blocked</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="collect-statistics">
+                                <span class="checkbox-custom"></span>
+                                Collect usage statistics
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <button id="export-data" class="btn btn--outline">
+                                Export Data
+                            </button>
+                            <button id="clear-data" class="btn btn--danger">
+                                Clear All Data
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Appearance -->
+                <section class="settings-section card">
+                    <div class="card__header">
+                        <h2>🎨 Appearance</h2>
+                        <p>Customize the extension appearance</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label for="theme">Theme</label>
+                            <select id="theme-select">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="auto">Auto (System)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="accent-color">Accent Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="accent-color" value="#3498db">
+                                <button id="reset-color" class="btn btn--outline btn--sm">Reset</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-progress-badge">
+                                <span class="checkbox-custom"></span>
+                                Show progress on extension badge
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="options-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>Stop Wasting Time Extension v1.0</p>
+                    <p>Boost your productivity and focus</p>
+                </div>
+                <div class="footer-actions">
+                    <button id="save-settings" class="btn btn--primary btn--lg">
+                        💾 Save Settings
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="success-message hidden">
+        <div class="success-content">
+            <span class="success-icon">✅</span>
+            <span class="success-text">Settings saved successfully!</span>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
