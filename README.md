@@ -1,83 +1,68 @@
 # Stop Wasting Time - Chrome Extension
 
-A comprehensive productivity Chrome extension that helps you stay focused by blocking distracting websites, managing tasks, and tracking your productivity with a built-in Pomodoro timer.
+A comprehensive productivity extension that helps you stay focused by blocking distracting websites, managing tasks, and tracking your productivity with an integrated Pomodoro timer system.
 
-## Features
+## 🎯 Features
 
-### 🎯 Pomodoro Timer
-- Customizable work sessions (default: 25 minutes)
-- Configurable break periods (default: 5 minutes)
-- Visual timer display with progress tracking
-- Desktop notifications for session changes
-- Badge display on extension icon showing remaining time
+### ⏱️ Pomodoro Timer
+- **Customizable work sessions** (default: 25 minutes)
+- **Configurable break periods** (default: 5 minutes)
+- **Background timer** using Chrome's alarms API
+- **Desktop notifications** for session changes
+- **Badge display** showing remaining time on extension icon
 
-### 🚫 Website Blocking
-- Blocks distracting websites during focus sessions
-- Beautiful blocking pages with motivational quotes
-- Customizable blocked sites list
-- Automatic blocking activation during work sessions
-- Statistics tracking of blocked attempts
+### 🚫 Smart Website Blocking
+- **Automatic blocking** of distracting websites during focus sessions
+- **Beautiful blocking pages** with motivational quotes
+- **Customizable blocked sites** list through settings
+- **Allowlist support** for always-accessible sites
+- **Statistics tracking** of blocked website attempts
 
 ### ✅ Task Management
-- Daily task list with completion tracking
-- Add, complete, and delete tasks
-- Task completion statistics
-- Productivity score calculation
+- **Daily task lists** with completion tracking
+- **Add, complete, and delete** tasks easily
+- **Task completion statistics** and productivity scoring
+- **Persistent storage** across browser sessions
 
 ### 📊 Analytics & Statistics
-- Daily focus time tracking
-- Session completion rates
-- Productivity score calculation
-- Blocked website attempt tracking
-- Weekly and monthly progress views
+- **Daily focus time** tracking
+- **Session completion rates** monitoring
+- **Productivity score** calculation
+- **Comprehensive reporting** system
+- **Weekly productivity insights**
 
-### ⚙️ Customization
-- Multiple theme options (Default, Dark, Light, Blue, Green)
-- Customizable timer durations
-- Notification preferences
-- Appearance settings
-- Data export/import functionality
+### ⚙️ Full Customization
+- **Multiple theme options** (Default, Dark, Light, Blue, Green, Purple)
+- **Customizable timer durations**
+- **Notification preferences** management
+- **Appearance settings** customization
+- **Data export/import** functionality
 
-## Installation
+## 🚀 Installation
 
-### Method 1: Load as Unpacked Extension (Recommended)
+### Quick Install Steps
 
 1. **Download the Extension Files**
-   - Download all files from this repository
-   - Extract them to a folder on your computer
+   - Download or clone this repository
+   - Extract all files maintaining the folder structure
 
-2. **Open Chrome Extensions Page**
-   - Open Google Chrome
-   - Navigate to `chrome://extensions/`
-   - Or click the three dots menu → More tools → Extensions
+2. **Enable Developer Mode**
+   - Open Chrome and navigate to `chrome://extensions/`
+   - Toggle "Developer mode" in the top right corner
 
-3. **Enable Developer Mode**
-   - Toggle the "Developer mode" switch in the top right corner
+3. **Add Icon Files** (Required)
+   - Create three icon files in the `icons/` folder:
+     - `icon16.png` (16x16 pixels)
+     - `icon48.png` (48x48 pixels)
+     - `icon128.png` (128x128 pixels)
+   - You can create simple square icons with any image editor
 
 4. **Load the Extension**
-   - Click "Load unpacked" button
-   - Select the folder containing all the extension files
-   - The extension should now appear in your extensions list
+   - Click "Load unpacked" in Chrome extensions page
+   - Select the `stop-wasting-time-extension` folder
+   - The extension will appear in your Chrome toolbar
 
-5. **Verify Installation**
-   - Look for the extension icon in your Chrome toolbar
-   - Click the icon to open the popup and verify it works
-
-### Method 2: Install Icons (Important!)
-
-The extension requires three icon files in the `icons/` folder:
-- `icon16.png` (16x16 pixels)
-- `icon48.png` (48x48 pixels)
-- `icon128.png` (128x128 pixels)
-
-If you don't have these icons, you can:
-1. Create them manually using any image editor
-2. Use online icon generators
-3. Use simple colored squares as temporary icons
-
-## File Structure
-
-Your extension folder should contain these files:
+### Required File Structure
 
 ```
 stop-wasting-time-extension/
@@ -91,130 +76,167 @@ stop-wasting-time-extension/
 ├── options.css           # Settings page styling
 ├── options.js            # Settings functionality
 ├── rules.json            # Website blocking rules
-├── icons/
-│   ├── icon16.png        # 16x16 toolbar icon
-│   ├── icon48.png        # 48x48 extension icon
-│   └── icon128.png       # 128x128 Chrome Web Store icon
-└── README.md             # This file
+├── README.md             # This file
+└── icons/                # Icons folder
+    ├── icon16.png        # 16x16 toolbar icon
+    ├── icon48.png        # 48x48 extension icon
+    └── icon128.png       # 128x128 store icon
 ```
 
-## Usage
+## 📱 Usage Guide
 
 ### Starting a Focus Session
-
 1. Click the extension icon in your Chrome toolbar
 2. Review your daily tasks and add any new ones
-3. Click "Start Focus" to begin a 25-minute work session
+3. Click "Start Focus" to begin a Pomodoro session
 4. Distracting websites will be automatically blocked
-5. Focus on your work until you receive a notification
+5. Focus on your work until the timer notification appears
 
 ### Managing Tasks
-
-- **Add tasks**: Type in the task input field and click "Add" or press Enter
-- **Complete tasks**: Check the checkbox next to completed tasks
-- **Delete tasks**: Click the "×" button next to any task
-- **View progress**: See completion statistics in the popup
+- **Add tasks** using the input field in the popup
+- **Check off completed tasks** to track progress
+- **View completion statistics** in real-time
+- **Tasks reset daily** (configurable in settings)
 
 ### Customizing Settings
-
-1. Click the "Settings" button in the popup
-2. Or right-click the extension icon and select "Options"
-3. Configure timer durations, blocked sites, notifications, and appearance
-4. Changes are saved automatically
+- Access settings through the popup or by right-clicking the extension icon
+- Configure timer durations, blocked websites, notifications, and themes
+- Export/import your data for backup and synchronization
 
 ### Viewing Statistics
+- Access detailed statistics through the settings page
+- View daily focus time, session completion rates, and productivity scores
+- Get insights and recommendations for improving your productivity
 
-- **Daily stats**: Visible in the popup interface
-- **Detailed report**: Click "Daily Report" for comprehensive analytics
-- **All-time stats**: Available in the Settings → Data tab
+## 🔧 Technical Details
 
-## Troubleshooting
+### Chrome Extension Standards
+- **Manifest V3** - Uses the latest Chrome extension format
+- **Service Worker** - Efficient background processing
+- **declarativeNetRequest** - Secure website blocking
+- **Chrome Storage API** - Persistent data storage
+- **Chrome Notifications API** - Desktop notifications
+- **Chrome Alarms API** - Accurate timer functionality
 
-### Extension Won't Load
+### Website Blocking
+The extension uses Chrome's `declarativeNetRequest` API for efficient, tamper-proof website blocking. Default blocked sites include:
 
-**Error**: "Could not load extension"
-- **Solution**: Check that all files are present and `manifest.json` is valid JSON
+- Social Media: Facebook, Instagram, Twitter, LinkedIn, TikTok, Snapchat
+- Entertainment: YouTube, Netflix, Twitch, Reddit, 9GAG, Imgur
+- Communication: Discord, WhatsApp, Telegram
+- Other: Pinterest, Tumblr, BuzzFeed
 
-**Error**: "Invalid icon"
-- **Solution**: Ensure all three icon files exist in the `icons/` folder with correct dimensions
+### Data Privacy
+- **Local storage only** - No external servers involved
+- **No data collection** - All information stays on your device
+- **Transparent code** - Open source and inspectable
+- **Secure blocking** - Uses Chrome's native APIs
 
-### Extension Loads but Doesn't Work
+## 🎨 Customization Options
 
-**Problem**: Timer doesn't start
-- **Solution**: Check that notifications permission is granted in Chrome
+### Themes
+- **Default** - Purple gradient theme
+- **Dark** - Dark mode for low-light environments
+- **Light** - Clean light theme
+- **Blue** - Professional blue theme
+- **Green** - Nature-inspired green theme
+- **Purple** - Rich purple theme
 
-**Problem**: Website blocking not working
-- **Solution**: Verify that the extension has permissions for all websites
+### Timer Settings
+- **Work duration**: 1-60 minutes (default: 25)
+- **Break duration**: 1-30 minutes (default: 5)
+- **Auto-start breaks**: Automatic break session initiation
+- **Badge display**: Show timer on extension icon
+- **Sound notifications**: Audio alerts for session changes
 
-**Problem**: Settings don't save
-- **Solution**: Check Chrome storage permissions and try reloading the extension
+### Blocking Options
+- **Standard mode**: Blocks social media and entertainment sites
+- **Strict mode**: Blocks all non-work related sites
+- **Custom mode**: User-defined blocking list
+- **Allowlist**: Sites that are never blocked
+- **Motivational quotes**: Inspirational messages on blocked pages
 
-### Performance Issues
+## 🔍 Troubleshooting
 
-**Problem**: Extension slows down browser
-- **Solution**: Reduce the number of blocked websites or disable unused features
+### Common Issues
 
-**Problem**: Timer inaccurate
-- **Solution**: This is normal due to Chrome's alarm API limitations - timers may be off by a few seconds
+**Extension doesn't load**
+- Ensure all files are present in the correct folder structure
+- Check that manifest.json is valid JSON
+- Verify icon files exist in the `icons/` folder
 
-## Permissions Explained
+**Timer doesn't start**
+- Enable notifications permission in Chrome
+- Check that the background script is running
+- Verify Chrome's alarm permissions are granted
 
-The extension requires these permissions:
+**Websites aren't blocked**
+- Ensure website blocking is enabled in settings
+- Check that the timer is running in work mode
+- Verify the site isn't in your allowlist
 
-- **storage**: Save settings and statistics
-- **alarms**: Run the Pomodoro timer
-- **notifications**: Show desktop notifications
-- **declarativeNetRequest**: Block websites
-- **activeTab**: Access current tab for blocking
-- **scripting**: Inject blocking content
-- **host_permissions**: Access all websites for blocking
+**Settings don't save**
+- Check Chrome's storage permissions
+- Ensure the extension has proper storage access
+- Try resetting settings to default
 
-## Development
+### Performance Tips
+- Keep the extension updated for best performance
+- Regularly clear old statistics data
+- Use compact mode on slower devices
+- Disable unnecessary notifications
 
-### Making Changes
+## 📈 Productivity Tips
 
-1. Edit the source files
-2. Go to `chrome://extensions/`
-3. Click the refresh button on the extension card
-4. Test your changes
+### Getting Started
+1. **Start with default settings** to understand the workflow
+2. **Set realistic goals** for your first few sessions
+3. **Add 2-3 important tasks** before starting
+4. **Use the full 25-minute work session** without interruption
 
-### Adding New Blocked Sites
+### Maximizing Effectiveness
+- **Plan your tasks** before starting each session
+- **Take breaks seriously** - they're crucial for productivity
+- **Review your statistics** regularly to track improvement
+- **Gradually increase** work session duration as you adapt
 
-1. Open the Settings page
-2. Go to the "Blocking" tab
-3. Add sites in the format: `example.com` (without `www.` or `https://`)
-4. Or edit the `rules.json` file directly
+### Advanced Usage
+- **Customize blocked sites** based on your specific distractions
+- **Use different themes** for different types of work
+- **Export data regularly** for backup and analysis
+- **Set up motivational quotes** that inspire you personally
 
-### Customizing Themes
+## 🤝 Contributing
 
-1. Edit `popup.css` and `options.css`
-2. Add new theme classes following the existing pattern
-3. Update the theme selector in `options.html`
+This extension is open source and welcomes contributions:
 
-## Support
+1. **Bug reports** - Report issues through GitHub
+2. **Feature requests** - Suggest new functionality
+3. **Code contributions** - Submit pull requests
+4. **Documentation** - Help improve guides and tutorials
 
-If you encounter issues:
+## 📄 License
 
-1. Check that all files are present in the correct structure
-2. Verify that Chrome Developer Mode is enabled
-3. Try reloading the extension
-4. Check the browser console for error messages
-5. Ensure you have the latest version of Chrome
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## License
+## 🆘 Support
 
-This extension is provided as-is for educational and productivity purposes. Feel free to modify and distribute according to your needs.
+For support, feature requests, or bug reports:
+- Check the troubleshooting section above
+- Review the Chrome extension documentation
+- Ensure you're using the latest version of Chrome
 
-## Version History
+## 🙏 Acknowledgments
 
-### v1.0
-- Initial release
-- Basic Pomodoro timer functionality
-- Website blocking system
-- Task management
-- Statistics tracking
-- Customizable settings
+- Built using Chrome Extension Manifest V3
+- Inspired by the Pomodoro Technique
+- Designed for productivity enthusiasts
+- Open source and community-driven
 
 ---
 
-**Happy focusing! 🎯**
+**Version**: 1.0.0  
+**Compatibility**: Chrome 88+  
+**Last Updated**: 2024
+
+*Transform your browsing experience into a focused, productive workspace with Stop Wasting Time!* 🎯

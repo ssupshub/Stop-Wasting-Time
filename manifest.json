@@ -1,15 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Stop Wasting Time",
-  "description": "Boost your productivity with website blocking, focus timers, and task management.",
-  "version": "1.0",
+  "version": "1.0.0",
+  "description": "A productivity extension that blocks distracting websites and includes a Pomodoro timer, task management, and analytics.",
   "permissions": [
     "storage",
     "alarms",
     "notifications",
-    "activeTab",
     "declarativeNetRequest",
-    "tabs"
+    "activeTab"
   ],
   "host_permissions": [
     "http://*/*",
@@ -21,7 +20,8 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
         "content.js"
@@ -31,7 +31,6 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Stop Wasting Time",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

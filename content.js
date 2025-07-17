@@ -1,356 +1,395 @@
-// Stop Wasting Time - Content Script
+// Content script for Stop Wasting Time Extension
+// Handles website blocking and displays motivational blocking page
 
+// Check if this is a blocked website
 (function() {
     'use strict';
 
-    class ContentBlocker {
-        constructor() {
-            this.blockedSites = [];
-            this.isBlocked = false;
-            this.checkInterval = null;
-            this.init();
-        }
+    // List of blocked domains (will be filtered by declarativeNetRequest)
+    const blockedDomains = [
+        'facebook.com',
+        'instagram.com',
+        'twitter.com',
+        'youtube.com',
+        'reddit.com',
+        'tiktok.com',
+        'snapchat.com',
+        'pinterest.com',
+        'linkedin.com',
+        'twitch.tv',
+        'netflix.com',
+        'discord.com',
+        'whatsapp.com',
+        'telegram.org',
+        'tumblr.com',
+        '9gag.com',
+        'buzzfeed.com',
+        'imgur.com'
+    ];
 
-        async init() {
-            // Get current blocking state
-            const response = await chrome.runtime.sendMessage({action: 'getState'});
+    // Motivational quotes
+    const motivationalQuotes = [
+        "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+        "The way to get started is to quit talking and begin doing. - Walt Disney",
+        "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+        "The future depends on what you do today. - Mahatma Gandhi",
+        "Focus on being productive instead of busy. - Tim Ferriss",
+        "Time is what we want most, but what we use worst. - William Penn",
+        "You don't have to be great to get started, but you have to get started to be great. - Les Brown",
+        "The successful warrior is the average man with laser-like focus. - Bruce Lee",
+        "Concentration is the secret of strength. - Ralph Waldo Emerson",
+        "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. - Steve Jobs"
+    ];
 
-            if (response && response.blockingState) {
-                this.blockedSites = response.blockingState.blockedSites || [];
-                this.isBlocked = response.blockingState.isActive;
+    // Check if current domain is blocked
+    function isBlockedDomain() {
+        const currentDomain = window.location.hostname.toLowerCase();
+        return blockedDomains.some(domain => 
+            currentDomain.includes(domain) || currentDomain.endsWith(domain)
+        );
+    }
 
-                if (this.isBlocked) {
-                    this.checkCurrentSite();
+    // Get random motivational quote
+    function getRandomQuote() {
+        return motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+    }
+
+    // Create blocking page
+    function createBlockingPage() {
+        // Clear the page
+        document.documentElement.innerHTML = '';
+
+        // Create new page structure
+        const html = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Focus Mode Active - Stop Wasting Time</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
                 }
-            }
 
-            // Listen for blocking state changes
-            chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-                if (request.action === 'blockingUpdate') {
-                    this.blockedSites = request.blockingState.blockedSites || [];
-                    this.isBlocked = request.blockingState.isActive;
-
-                    if (this.isBlocked) {
-                        this.checkCurrentSite();
-                    } else {
-                        this.unblockSite();
-                    }
-                }
-            });
-        }
-
-        checkCurrentSite() {
-            const currentDomain = window.location.hostname.replace('www.', '');
-
-            // Check if current site is in blocked list
-            const isCurrentSiteBlocked = this.blockedSites.some(site => 
-                currentDomain.includes(site) || site.includes(currentDomain)
-            );
-
-            if (isCurrentSiteBlocked) {
-                this.blockSite();
-            } else {
-                this.unblockSite();
-            }
-        }
-
-        blockSite() {
-            // Remove existing blocked content if any
-            this.unblockSite();
-
-            // Create blocking overlay
-            const overlay = this.createBlockingOverlay();
-            document.body.appendChild(overlay);
-
-            // Hide original content
-            document.body.style.overflow = 'hidden';
-
-            // Add blocked class
-            document.body.classList.add('swt-blocked');
-
-            // Start monitoring for attempts to remove blocking
-            this.startMonitoring();
-        }
-
-        unblockSite() {
-            // Remove blocking overlay
-            const overlay = document.getElementById('swt-blocking-overlay');
-            if (overlay) {
-                overlay.remove();
-            }
-
-            // Restore original content
-            document.body.style.overflow = '';
-            document.body.classList.remove('swt-blocked');
-
-            // Stop monitoring
-            this.stopMonitoring();
-        }
-
-        createBlockingOverlay() {
-            const overlay = document.createElement('div');
-            overlay.id = 'swt-blocking-overlay';
-            overlay.innerHTML = `
-                <div class="swt-blocking-container">
-                    <div class="swt-blocking-content">
-                        <div class="swt-blocking-icon">🚫</div>
-                        <h1 class="swt-blocking-title">Site Blocked</h1>
-                        <p class="swt-blocking-message">
-                            This website is blocked during your focus session.
-                        </p>
-                        <div class="swt-blocking-stats">
-                            <div class="swt-stat">
-                                <div class="swt-stat-value" id="swt-focus-time">0:00</div>
-                                <div class="swt-stat-label">Focus Time</div>
-                            </div>
-                            <div class="swt-stat">
-                                <div class="swt-stat-value" id="swt-blocked-count">0</div>
-                                <div class="swt-stat-label">Sites Blocked</div>
-                            </div>
-                        </div>
-                        <div class="swt-blocking-quote">
-                            <p>"${this.getRandomQuote()}"</p>
-                        </div>
-                        <div class="swt-blocking-actions">
-                            <button class="swt-btn swt-btn-primary" onclick="window.close()">
-                                Close Tab
-                            </button>
-                            <button class="swt-btn swt-btn-secondary" id="swt-back-btn">
-                                Go Back
-                            </button>
-                        </div>
-                        <div class="swt-blocking-footer">
-                            <small>Blocked by Stop Wasting Time Extension</small>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Add styles
-            this.addBlockingStyles(overlay);
-
-            // Add event listeners
-            overlay.querySelector('#swt-back-btn').addEventListener('click', () => {
-                window.history.back();
-            });
-
-            return overlay;
-        }
-
-        addBlockingStyles(overlay) {
-            const styles = document.createElement('style');
-            styles.textContent = `
-                #swt-blocking-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    z-index: 2147483647;
+                    min-height: 100vh;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     color: white;
-                }
-
-                .swt-blocking-container {
                     text-align: center;
-                    max-width: 500px;
-                    padding: 40px;
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 20px;
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                    padding: 20px;
                 }
 
-                .swt-blocking-icon {
-                    font-size: 64px;
+                .container {
+                    max-width: 600px;
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    border-radius: 20px;
+                    padding: 40px;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                }
+
+                .icon {
+                    font-size: 80px;
                     margin-bottom: 20px;
                     animation: pulse 2s infinite;
                 }
 
                 @keyframes pulse {
-                    0%, 100% { transform: scale(1); }
+                    0% { transform: scale(1); }
                     50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
                 }
 
-                .swt-blocking-title {
-                    font-size: 32px;
-                    font-weight: 700;
-                    margin-bottom: 16px;
-                    color: #ffffff;
+                h1 {
+                    font-size: 2.5em;
+                    margin-bottom: 20px;
+                    font-weight: 300;
                 }
 
-                .swt-blocking-message {
-                    font-size: 18px;
-                    margin-bottom: 32px;
-                    color: rgba(255, 255, 255, 0.9);
-                    line-height: 1.5;
+                .message {
+                    font-size: 1.2em;
+                    margin-bottom: 30px;
+                    line-height: 1.6;
+                    opacity: 0.9;
                 }
 
-                .swt-blocking-stats {
-                    display: flex;
-                    justify-content: center;
-                    gap: 32px;
-                    margin-bottom: 32px;
+                .quote {
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 20px;
+                    border-radius: 10px;
+                    margin: 30px 0;
+                    font-style: italic;
+                    font-size: 1.1em;
+                    line-height: 1.6;
+                    border-left: 4px solid #ffeb3b;
                 }
 
-                .swt-stat {
+                .stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                    gap: 20px;
+                    margin: 30px 0;
+                }
+
+                .stat-item {
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 20px;
+                    border-radius: 10px;
                     text-align: center;
                 }
 
-                .swt-stat-value {
-                    font-size: 24px;
-                    font-weight: 700;
-                    color: #ffffff;
-                    margin-bottom: 4px;
+                .stat-number {
+                    font-size: 2em;
+                    font-weight: bold;
+                    color: #ffeb3b;
+                    display: block;
                 }
 
-                .swt-stat-label {
-                    font-size: 12px;
-                    color: rgba(255, 255, 255, 0.7);
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
+                .stat-label {
+                    font-size: 0.9em;
+                    opacity: 0.8;
+                    margin-top: 5px;
                 }
 
-                .swt-blocking-quote {
-                    margin-bottom: 32px;
-                    padding: 20px;
+                .tips {
                     background: rgba(255, 255, 255, 0.1);
+                    padding: 20px;
                     border-radius: 10px;
-                    border-left: 4px solid #ffffff;
+                    margin: 30px 0;
+                    text-align: left;
                 }
 
-                .swt-blocking-quote p {
-                    font-style: italic;
-                    font-size: 16px;
-                    color: rgba(255, 255, 255, 0.9);
-                    margin: 0;
+                .tips h3 {
+                    margin-bottom: 15px;
+                    color: #ffeb3b;
                 }
 
-                .swt-blocking-actions {
-                    display: flex;
-                    gap: 16px;
-                    justify-content: center;
-                    margin-bottom: 24px;
+                .tips ul {
+                    list-style: none;
+                    padding: 0;
                 }
 
-                .swt-btn {
-                    padding: 12px 24px;
+                .tips li {
+                    padding: 5px 0;
+                    padding-left: 20px;
+                    position: relative;
+                }
+
+                .tips li:before {
+                    content: "✓";
+                    position: absolute;
+                    left: 0;
+                    color: #4CAF50;
+                    font-weight: bold;
+                }
+
+                .back-button {
+                    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+                    color: white;
                     border: none;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    font-weight: 600;
+                    padding: 15px 30px;
+                    border-radius: 25px;
+                    font-size: 1.1em;
                     cursor: pointer;
-                    transition: all 0.2s ease;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    transition: all 0.3s ease;
+                    margin-top: 20px;
                 }
 
-                .swt-btn-primary {
-                    background: #ffffff;
-                    color: #667eea;
-                }
-
-                .swt-btn-primary:hover {
-                    background: #f8f9fa;
+                .back-button:hover {
+                    background: linear-gradient(45deg, #45a049, #7cb342);
                     transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
                 }
 
-                .swt-btn-secondary {
-                    background: transparent;
-                    color: #ffffff;
-                    border: 2px solid #ffffff;
+                .blocked-site {
+                    color: #ffeb3b;
+                    font-weight: bold;
                 }
 
-                .swt-btn-secondary:hover {
-                    background: #ffffff;
-                    color: #667eea;
-                    transform: translateY(-2px);
+                @media (max-width: 768px) {
+                    .container {
+                        padding: 30px 20px;
+                    }
+
+                    h1 {
+                        font-size: 2em;
+                    }
+
+                    .icon {
+                        font-size: 60px;
+                    }
+
+                    .stats {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="icon">🎯</div>
+                <h1>Focus Mode Active</h1>
+                <div class="message">
+                    You're trying to access <span class="blocked-site">${window.location.hostname}</span> during your focus session. Stay strong and keep working towards your goals!
+                </div>
+
+                <div class="quote" id="motivationalQuote">
+                    ${getRandomQuote()}
+                </div>
+
+                <div class="stats" id="statsContainer">
+                    <div class="stat-item">
+                        <span class="stat-number" id="blockedCount">0</span>
+                        <span class="stat-label">Sites Blocked Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="focusTime">0m</span>
+                        <span class="stat-label">Focus Time Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="sessions">0</span>
+                        <span class="stat-label">Sessions Completed</span>
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <h3>💡 Productivity Tips</h3>
+                    <ul>
+                        <li>Take deep breaths and refocus on your current task</li>
+                        <li>Write down what you want to accomplish this session</li>
+                        <li>Use the Pomodoro technique: 25 minutes work, 5 minutes break</li>
+                        <li>Eliminate distractions from your workspace</li>
+                        <li>Reward yourself after completing tasks</li>
+                    </ul>
+                </div>
+
+                <button class="back-button" onclick="history.back()">
+                    ← Return to Previous Page
+                </button>
+            </div>
+
+            <script>
+                // Load and display statistics
+                if (typeof chrome !== 'undefined' && chrome.storage) {
+                    chrome.storage.local.get(['dailyStats'], function(result) {
+                        if (result.dailyStats) {
+                            const stats = result.dailyStats;
+                            document.getElementById('blockedCount').textContent = stats.websitesBlocked || 0;
+                            document.getElementById('sessions').textContent = stats.sessionsCompleted || 0;
+
+                            // Format focus time
+                            const focusMinutes = Math.floor((stats.focusTime || 0) / 60);
+                            const focusHours = Math.floor(focusMinutes / 60);
+                            const remainingMinutes = focusMinutes % 60;
+
+                            if (focusHours > 0) {
+                                document.getElementById('focusTime').textContent = focusHours + 'h ' + remainingMinutes + 'm';
+                            } else {
+                                document.getElementById('focusTime').textContent = focusMinutes + 'm';
+                            }
+                        }
+                    });
                 }
 
-                .swt-blocking-footer {
-                    color: rgba(255, 255, 255, 0.6);
-                    font-size: 12px;
+                // Notify background script about blocked attempt
+                if (typeof chrome !== 'undefined' && chrome.runtime) {
+                    chrome.runtime.sendMessage({ action: 'websiteBlocked' });
                 }
 
-                /* Ensure blocking overlay is always on top */
-                #swt-blocking-overlay * {
-                    z-index: 2147483647;
-                }
+                // Change quote every 10 seconds
+                setInterval(function() {
+                    const quotes = [
+                        "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+                        "The way to get started is to quit talking and begin doing. - Walt Disney",
+                        "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+                        "The future depends on what you do today. - Mahatma Gandhi",
+                        "Focus on being productive instead of busy. - Tim Ferriss",
+                        "Time is what we want most, but what we use worst. - William Penn",
+                        "You don't have to be great to get started, but you have to get started to be great. - Les Brown",
+                        "The successful warrior is the average man with laser-like focus. - Bruce Lee",
+                        "Concentration is the secret of strength. - Ralph Waldo Emerson",
+                        "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. - Steve Jobs"
+                    ];
 
-                /* Hide page content when blocked */
-                body.swt-blocked > *:not(#swt-blocking-overlay) {
-                    display: none !important;
-                }
-            `;
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    document.getElementById('motivationalQuote').textContent = randomQuote;
+                }, 10000);
 
-            overlay.appendChild(styles);
+                // Prevent bypassing
+                window.addEventListener('beforeunload', function(e) {
+                    e.preventDefault();
+                    return '';
+                });
+
+                // Block common bypass attempts
+                document.addEventListener('keydown', function(e) {
+                    // Block F12, Ctrl+Shift+I, Ctrl+U, etc.
+                    if (e.keyCode === 123 || 
+                        (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+                        (e.ctrlKey && e.keyCode === 85)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+
+                // Block right-click context menu
+                document.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            </script>
+        </body>
+        </html>
+        `;
+
+        document.documentElement.innerHTML = html;
+
+        // Record blocked attempt
+        if (typeof chrome !== 'undefined' && chrome.runtime) {
+            chrome.runtime.sendMessage({ action: 'websiteBlocked' });
         }
+    }
 
-        getRandomQuote() {
-            const quotes = [
-                "Focus is the key to productivity",
-                "Every moment counts towards your goals",
-                "Discipline is choosing between what you want now and what you want most",
-                "Success is the sum of small efforts repeated day in and day out",
-                "The future depends on what you do today",
-                "Don't watch the clock; do what it does. Keep going",
-                "Focus on being productive instead of being busy",
-                "The successful warrior is the average person with laser-like focus",
-                "Where focus goes, energy flows and results show",
-                "Concentration is the secret of strength"
-            ];
+    // Check if we should show blocking page
+    function checkBlocking() {
+        if (isBlockedDomain()) {
+            // Check if timer is running and blocking is enabled
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.local.get(['timerState', 'settings'], function(result) {
+                    const timerState = result.timerState || {};
+                    const settings = result.settings || {};
 
-            return quotes[Math.floor(Math.random() * quotes.length)];
-        }
-
-        startMonitoring() {
-            // Monitor for attempts to remove blocking
-            this.checkInterval = setInterval(() => {
-                const overlay = document.getElementById('swt-blocking-overlay');
-                if (this.isBlocked && !overlay) {
-                    this.blockSite();
-                }
-            }, 1000);
-
-            // Monitor for navigation attempts
-            const originalPushState = history.pushState;
-            const originalReplaceState = history.replaceState;
-
-            history.pushState = function() {
-                originalPushState.apply(history, arguments);
-                setTimeout(() => this.checkCurrentSite(), 100);
-            }.bind(this);
-
-            history.replaceState = function() {
-                originalReplaceState.apply(history, arguments);
-                setTimeout(() => this.checkCurrentSite(), 100);
-            }.bind(this);
-
-            // Monitor for popstate events
-            window.addEventListener('popstate', () => {
-                setTimeout(() => this.checkCurrentSite(), 100);
-            });
-        }
-
-        stopMonitoring() {
-            if (this.checkInterval) {
-                clearInterval(this.checkInterval);
-                this.checkInterval = null;
+                    if (timerState.isRunning && timerState.isWorkSession && settings.blockWebsites !== false) {
+                        createBlockingPage();
+                    }
+                });
             }
         }
     }
 
-    // Initialize content blocker
+    // Initialize
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            new ContentBlocker();
-        });
+        document.addEventListener('DOMContentLoaded', checkBlocking);
     } else {
-        new ContentBlocker();
+        checkBlocking();
     }
+
+    // Also check on page changes (for SPAs)
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+        const url = location.href;
+        if (url !== lastUrl) {
+            lastUrl = url;
+            checkBlocking();
+        }
+    }).observe(document, { subtree: true, childList: true });
+
 })();

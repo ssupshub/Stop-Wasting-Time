@@ -7,115 +7,56 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class="popup-container">
-        <!-- Header -->
-        <header class="popup-header">
-            <h1>Stop Wasting Time</h1>
-            <div class="header-controls">
-                <button id="theme-toggle" class="btn btn--sm btn--outline">🌙</button>
-                <button id="settings-btn" class="btn btn--sm btn--outline">⚙️</button>
+    <div class="container">
+        <header class="header">
+            <h1>🎯 Stop Wasting Time</h1>
+            <div class="stats-summary">
+                <span class="stat-item">
+                    <span class="stat-value" id="todayFocusTime">0m</span>
+                    <span class="stat-label">Today</span>
+                </span>
+                <span class="stat-item">
+                    <span class="stat-value" id="productivityScore">0%</span>
+                    <span class="stat-label">Score</span>
+                </span>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="popup-main">
-            <!-- Focus Session Section -->
-            <section class="focus-section card">
-                <div class="card__body">
-                    <h2>Focus Session</h2>
-                    <div class="timer-display">
-                        <div class="timer-circle">
-                            <div class="timer-text">
-                                <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
-                            </div>
-                            <div class="timer-mode">
-                                <span id="current-mode">Work Session</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timer-controls">
-                        <button id="start-timer" class="btn btn--primary">Start Focus</button>
-                        <button id="pause-timer" class="btn btn--secondary hidden">Pause</button>
-                        <button id="stop-timer" class="btn btn--outline hidden">Stop</button>
-                    </div>
-                    <div class="timer-info">
-                        <div class="session-count">
-                            Sessions: <span id="session-count">0</span>
-                        </div>
+        <div class="timer-section">
+            <div class="timer-display">
+                <div class="timer-circle">
+                    <div class="timer-progress">
+                        <div class="timer-time" id="timerDisplay">25:00</div>
+                        <div class="timer-status" id="timerStatus">Ready to Focus</div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Blocked Sites Section -->
-            <section class="blocked-sites-section card">
-                <div class="card__body">
-                    <h2>Website Blocking</h2>
-                    <div class="blocking-status">
-                        <span id="blocking-status">Inactive</span>
-                        <button id="toggle-blocking" class="btn btn--outline">Enable Blocking</button>
-                    </div>
-                    <div class="blocked-sites-list">
-                        <div id="blocked-sites-count">0 sites blocked</div>
-                        <div class="blocked-sites-preview" id="blocked-sites-preview">
-                            <!-- Dynamic content -->
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div class="timer-controls">
+                <button id="startBtn" class="btn btn-primary">Start Focus</button>
+                <button id="pauseBtn" class="btn btn-secondary" style="display: none;">Pause</button>
+                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+            </div>
+        </div>
 
-            <!-- Daily Tasks Section -->
-            <section class="tasks-section card">
-                <div class="card__body">
-                    <h2>Daily Tasks</h2>
-                    <div class="task-input">
-                        <input type="text" id="task-input" placeholder="Add a new task..." maxlength="100">
-                        <button id="add-task" class="btn btn--primary">Add</button>
-                    </div>
-                    <div class="tasks-list" id="tasks-list">
-                        <!-- Dynamic content -->
-                    </div>
-                    <div class="task-stats">
-                        <span id="tasks-completed">0</span>/<span id="tasks-total">0</span> tasks completed
-                    </div>
-                </div>
-            </section>
+        <div class="tasks-section">
+            <h3>Today's Tasks</h3>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="Add a new task...">
+                <button id="addTaskBtn" class="btn btn-add">+</button>
+            </div>
+            <div class="task-list" id="taskList">
+                <!-- Tasks will be dynamically added here -->
+            </div>
+            <div class="task-stats">
+                <span id="taskProgress">0 of 0 tasks completed</span>
+            </div>
+        </div>
 
-            <!-- Quick Stats Section -->
-            <section class="stats-section card">
-                <div class="card__body">
-                    <h2>Today's Progress</h2>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value" id="focus-time">0h 0m</div>
-                            <div class="stat-label">Focus Time</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="productivity-score">0%</div>
-                            <div class="stat-label">Productivity Score</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="blocked-attempts">0</div>
-                            <div class="stat-label">Sites Blocked</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Motivational Quote -->
-            <section class="quote-section card">
-                <div class="card__body">
-                    <blockquote id="daily-quote">
-                        "Focus is the key to productivity"
-                    </blockquote>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="popup-footer">
-            <button id="options-link" class="btn btn--outline btn--sm">Settings</button>
-            <div class="version">v1.0</div>
-        </footer>
+        <div class="quick-actions">
+            <button id="settingsBtn" class="btn btn-link">⚙️ Settings</button>
+            <button id="statsBtn" class="btn btn-link">📊 Statistics</button>
+        </div>
     </div>
 
     <script src="popup.js"></script>
