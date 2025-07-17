@@ -1,202 +1,205 @@
 # Stop Wasting Time - Chrome Extension
 
-A powerful Chrome extension designed to boost your productivity by blocking distracting websites, managing focus sessions with Pomodoro timers, and tracking your daily tasks.
+A comprehensive productivity Chrome extension that helps you stay focused by blocking distracting websites, managing tasks, and tracking your productivity with a built-in Pomodoro timer.
 
 ## Features
 
-### 🚫 Website Blocking
-- Block distracting websites during focus sessions
-- Customizable list of blocked sites
-- Beautiful blocking pages with motivational quotes
-- Automatic blocking during work sessions
+### 🎯 Pomodoro Timer
+- Customizable work sessions (default: 25 minutes)
+- Configurable break periods (default: 5 minutes)
+- Visual timer display with progress tracking
+- Desktop notifications for session changes
+- Badge display on extension icon showing remaining time
 
-### ⏱️ Focus Timer (Pomodoro)
-- Customizable work and break durations (default: 25 min work, 5 min break)
-- Session counter and progress tracking
-- Desktop notifications for session start/end
-- Automatic session switching
+### 🚫 Website Blocking
+- Blocks distracting websites during focus sessions
+- Beautiful blocking pages with motivational quotes
+- Customizable blocked sites list
+- Automatic blocking activation during work sessions
+- Statistics tracking of blocked attempts
 
 ### ✅ Task Management
-- Add and manage daily tasks
-- Track task completion
-- Daily goals and progress
-- Task completion notifications
+- Daily task list with completion tracking
+- Add, complete, and delete tasks
+- Task completion statistics
+- Productivity score calculation
 
-### 📊 Productivity Statistics
-- Track total focus time
-- Monitor productivity score
-- Count blocked website attempts
-- Session completion tracking
+### 📊 Analytics & Statistics
+- Daily focus time tracking
+- Session completion rates
+- Productivity score calculation
+- Blocked website attempt tracking
+- Weekly and monthly progress views
 
-### 🎨 Customization
-- Dark/Light theme toggle
-- Customizable accent colors
+### ⚙️ Customization
+- Multiple theme options (Default, Dark, Light, Blue, Green)
+- Customizable timer durations
 - Notification preferences
-- Personalized settings
+- Appearance settings
+- Data export/import functionality
 
 ## Installation
 
-### Method 1: Load as Unpacked Extension (Developer Mode)
+### Method 1: Load as Unpacked Extension (Recommended)
 
-1. **Download the Extension**
-   - Download all the files from the `chrome_extension` folder
-   - Keep the folder structure intact
+1. **Download the Extension Files**
+   - Download all files from this repository
+   - Extract them to a folder on your computer
 
-2. **Enable Developer Mode**
-   - Open Chrome and go to `chrome://extensions/`
-   - Toggle on "Developer mode" in the top right corner
+2. **Open Chrome Extensions Page**
+   - Open Google Chrome
+   - Navigate to `chrome://extensions/`
+   - Or click the three dots menu → More tools → Extensions
 
-3. **Load the Extension**
+3. **Enable Developer Mode**
+   - Toggle the "Developer mode" switch in the top right corner
+
+4. **Load the Extension**
    - Click "Load unpacked" button
-   - Select the `chrome_extension` folder
-   - The extension will be installed and ready to use
+   - Select the folder containing all the extension files
+   - The extension should now appear in your extensions list
 
-4. **Pin the Extension**
-   - Click the puzzle piece icon in the Chrome toolbar
-   - Find "Stop Wasting Time" and click the pin icon
-   - The extension icon will appear in your toolbar
+5. **Verify Installation**
+   - Look for the extension icon in your Chrome toolbar
+   - Click the icon to open the popup and verify it works
 
-### Method 2: Create Extension Package
+### Method 2: Install Icons (Important!)
 
-1. **Prepare Icons**
-   - Create icon files: `icon16.png`, `icon48.png`, `icon128.png`
-   - Place them in the `icons` folder
-   - Use a productivity-themed icon (like a clock or focus symbol)
+The extension requires three icon files in the `icons/` folder:
+- `icon16.png` (16x16 pixels)
+- `icon48.png` (48x48 pixels)
+- `icon128.png` (128x128 pixels)
 
-2. **Test the Extension**
-   - Load as unpacked extension first
-   - Test all features to ensure they work properly
-   - Fix any issues before packaging
-
-3. **Package for Distribution**
-   - Go to `chrome://extensions/`
-   - Click "Pack extension"
-   - Select the extension folder
-   - This creates a `.crx` file for distribution
-
-## Usage
-
-### Getting Started
-1. **First Setup**
-   - Click the extension icon in your toolbar
-   - Review the default settings
-   - Add any additional websites you want to block
-
-2. **Start a Focus Session**
-   - Click "Start Focus" in the popup
-   - The timer will begin and websites will be blocked
-   - Focus on your work without distractions
-
-3. **Manage Tasks**
-   - Add daily tasks in the popup
-   - Check them off as you complete them
-   - Track your productivity progress
-
-### Settings Configuration
-- Click the settings (⚙️) button in the popup
-- Or right-click the extension icon → Options
-- Customize timers, blocked sites, notifications, and appearance
+If you don't have these icons, you can:
+1. Create them manually using any image editor
+2. Use online icon generators
+3. Use simple colored squares as temporary icons
 
 ## File Structure
 
+Your extension folder should contain these files:
+
 ```
-chrome_extension/
-├── manifest.json          # Extension manifest (Manifest V3)
-├── popup.html             # Main popup interface
-├── popup.css              # Popup styling
-├── popup.js               # Popup functionality
-├── background.js          # Service worker (background script)
-├── content.js             # Content script for blocking
-├── options.html           # Settings page
-├── options.css            # Settings page styling
-├── options.js             # Settings page functionality
-├── rules.json             # Blocking rules (empty by default)
-├── icons/                 # Extension icons
-│   ├── icon16.png         # 16x16 icon
-│   ├── icon48.png         # 48x48 icon
-│   └── icon128.png        # 128x128 icon
-└── README.md              # This file
+stop-wasting-time-extension/
+├── manifest.json          # Extension configuration
+├── popup.html            # Main popup interface
+├── popup.css             # Popup styling
+├── popup.js              # Popup functionality
+├── background.js         # Background service worker
+├── content.js            # Content script for blocking
+├── options.html          # Settings page
+├── options.css           # Settings page styling
+├── options.js            # Settings functionality
+├── rules.json            # Website blocking rules
+├── icons/
+│   ├── icon16.png        # 16x16 toolbar icon
+│   ├── icon48.png        # 48x48 extension icon
+│   └── icon128.png       # 128x128 Chrome Web Store icon
+└── README.md             # This file
 ```
+
+## Usage
+
+### Starting a Focus Session
+
+1. Click the extension icon in your Chrome toolbar
+2. Review your daily tasks and add any new ones
+3. Click "Start Focus" to begin a 25-minute work session
+4. Distracting websites will be automatically blocked
+5. Focus on your work until you receive a notification
+
+### Managing Tasks
+
+- **Add tasks**: Type in the task input field and click "Add" or press Enter
+- **Complete tasks**: Check the checkbox next to completed tasks
+- **Delete tasks**: Click the "×" button next to any task
+- **View progress**: See completion statistics in the popup
+
+### Customizing Settings
+
+1. Click the "Settings" button in the popup
+2. Or right-click the extension icon and select "Options"
+3. Configure timer durations, blocked sites, notifications, and appearance
+4. Changes are saved automatically
+
+### Viewing Statistics
+
+- **Daily stats**: Visible in the popup interface
+- **Detailed report**: Click "Daily Report" for comprehensive analytics
+- **All-time stats**: Available in the Settings → Data tab
+
+## Troubleshooting
+
+### Extension Won't Load
+
+**Error**: "Could not load extension"
+- **Solution**: Check that all files are present and `manifest.json` is valid JSON
+
+**Error**: "Invalid icon"
+- **Solution**: Ensure all three icon files exist in the `icons/` folder with correct dimensions
+
+### Extension Loads but Doesn't Work
+
+**Problem**: Timer doesn't start
+- **Solution**: Check that notifications permission is granted in Chrome
+
+**Problem**: Website blocking not working
+- **Solution**: Verify that the extension has permissions for all websites
+
+**Problem**: Settings don't save
+- **Solution**: Check Chrome storage permissions and try reloading the extension
+
+### Performance Issues
+
+**Problem**: Extension slows down browser
+- **Solution**: Reduce the number of blocked websites or disable unused features
+
+**Problem**: Timer inaccurate
+- **Solution**: This is normal due to Chrome's alarm API limitations - timers may be off by a few seconds
 
 ## Permissions Explained
 
 The extension requires these permissions:
-- **storage**: Save settings and data locally
-- **alarms**: Create timers and notifications
+
+- **storage**: Save settings and statistics
+- **alarms**: Run the Pomodoro timer
 - **notifications**: Show desktop notifications
+- **declarativeNetRequest**: Block websites
 - **activeTab**: Access current tab for blocking
-- **declarativeNetRequest**: Block websites efficiently
-- **tabs**: Monitor tab changes for blocking
+- **scripting**: Inject blocking content
 - **host_permissions**: Access all websites for blocking
-
-## Technical Details
-
-### Architecture
-- **Manifest V3**: Uses the latest Chrome extension format
-- **Service Worker**: Background script for persistent functionality
-- **Content Scripts**: Inject blocking interface into web pages
-- **declarativeNetRequest**: Efficient website blocking API
-
-### Storage
-- Uses Chrome's `chrome.storage.local` API
-- Stores settings, tasks, statistics, and timer state
-- Data persists between browser sessions
-
-### Blocking System
-- Uses `declarativeNetRequest` API for performance
-- Dynamic rule creation and removal
-- Beautiful custom blocking pages
-- Monitoring to prevent bypass attempts
 
 ## Development
 
-### Prerequisites
-- Google Chrome browser
-- Basic knowledge of HTML, CSS, and JavaScript
-- Understanding of Chrome Extension APIs
+### Making Changes
 
-### Running in Development
-1. Clone or download the extension files
-2. Open Chrome and enable Developer Mode
-3. Load the extension as unpacked
-4. Make changes to the code
-5. Click the refresh button in `chrome://extensions/`
+1. Edit the source files
+2. Go to `chrome://extensions/`
+3. Click the refresh button on the extension card
+4. Test your changes
 
-### Building for Production
-1. Test thoroughly in development mode
-2. Create proper icon files
-3. Update version in `manifest.json`
-4. Package the extension
-5. Submit to Chrome Web Store (optional)
+### Adding New Blocked Sites
 
-## Troubleshooting
+1. Open the Settings page
+2. Go to the "Blocking" tab
+3. Add sites in the format: `example.com` (without `www.` or `https://`)
+4. Or edit the `rules.json` file directly
 
-### Common Issues
-1. **Extension not loading**: Check file permissions and folder structure
-2. **Blocking not working**: Ensure declarativeNetRequest permission is granted
-3. **Notifications not showing**: Check Chrome notification settings
-4. **Timer not accurate**: Browser may throttle background scripts
+### Customizing Themes
 
-### Debug Tips
-- Check the console in DevTools for error messages
-- Use `chrome://extensions/` to see error details
-- Test with different websites and scenarios
-- Clear extension data if settings get corrupted
-
-## Privacy & Security
-
-- All data is stored locally on your device
-- No data is sent to external servers
-- No tracking or analytics
-- Open source code for transparency
+1. Edit `popup.css` and `options.css`
+2. Add new theme classes following the existing pattern
+3. Update the theme selector in `options.html`
 
 ## Support
 
-For issues, suggestions, or contributions:
-1. Check the troubleshooting section
-2. Review the code for understanding
-3. Test with different scenarios
-4. Report specific issues with details
+If you encounter issues:
+
+1. Check that all files are present in the correct structure
+2. Verify that Chrome Developer Mode is enabled
+3. Try reloading the extension
+4. Check the browser console for error messages
+5. Ensure you have the latest version of Chrome
 
 ## License
 
@@ -206,12 +209,12 @@ This extension is provided as-is for educational and productivity purposes. Feel
 
 ### v1.0
 - Initial release
-- Basic timer functionality
-- Website blocking
+- Basic Pomodoro timer functionality
+- Website blocking system
 - Task management
-- Settings page
 - Statistics tracking
+- Customizable settings
 
 ---
 
-**Stay focused and productive!** 🚀
+**Happy focusing! 🎯**
